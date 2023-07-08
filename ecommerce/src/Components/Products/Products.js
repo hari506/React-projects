@@ -1,68 +1,111 @@
 import ListItem from "./ListItems/ListItems";
-import React, {useState} from "react";
+import React, { useState, useEffect } from "react";
 import Form from "../Form";
+import axios from "axios";
+import Loader from "../UI/Loader";
+import Modal from "../UI/Model";
 
-const Products = () => {
-   // const itme = ;
-    const [items, setItem] = useState([{
-      id: 1,
-      price : 340,
-      discountPrice: 400,
-      thumbNail: 'placeholder.png',
-      title: 'Produce Title 1'
-    },
-    {
-      id: 2,
-      price : 340,
-      discountPrice: 400,
-      thumbNail: 'placeholder.png',
-      title: 'Produce Title 2'
-    },
-    {
-      id: 3,
-      price : 340,
-      discountPrice: 400,
-      thumbNail: 'placeholder.png',
-      title: 'Produce Title 3'
-    },
-    {
-      id: 4,
-      price : 340,
-      discountPrice: 400,
-      thumbNail: 'placeholder.png',
-      title: 'Produce Title 4'
-    }]);
-    
-    {/*}
-    const handleInput = (e) => {
-      setItem({
-        ...item,
-        [e.target.name]: e.target.value
-      });
-    }
+const Products = ({increaseItemsCount, decreaseItemsCount, eventQueue}) => {
+  // const itme = ;
+  const [items, setItem] = useState([]);
+  const[loader, setLoader] = useState(true);
 
-    const hadnleFormSubmit = e => {
-      e.preventDefault();
-      console.log(item);
-      if(item.price > item.discountPrice){
-        alert("the discount price must be greater than price");
-        return;
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const res = await axios.get('https://react-ecommerce-565a4-default-rtdb.firebaseio.com/items.json');
+        const transFormedData = res.data.map((item, index) => {
+          return {
+            ...item,
+            quantity: 0,
+            id: index
+          }
+        });
+
+        setItem(transFormedData)
+      } catch (err) {
+        console.log(err);
+      } finally{
+        setLoader(false);
       }
     }
-  */}
 
-      return (
-        <div className={"product-list"}>
-            {/*<div>
-              <Form item={item} onChangeInput={handleInput} onFormSubmit={hadnleFormSubmit} />
-      </div>*/}
-            <div className={"product-list--wrapper"}>
-            {
-                items.map(item => <ListItem key={item.id} data={item}/>)
-             }
-            </div>
-        </div>
-      );
+    fetchData();
+  }, [])
+
+  useEffect(()=> {
+    let index = items.findIndex(item => item.id == eventQueue.id);
+    console.log("product js event queue", eventQueue);
+    if(index > -1){
+      if(eventQueue.type == 1){
+        handleIncreamentItmes1(items[index]);
+      }else{
+        handleDecreamentItmes1(items[index]);
+      }
+    }
+  }, [eventQueue])
+
+  {/* 
+
+  const updateItemTitle1 = async (id) => {
+    try{
+      const title = `Updated Title For item-${id}`;
+     const updateItem = axios.patch(`https://react-ecommerce-565a4-default-rtdb.firebaseio.com/items/${id}.json`, {
+       title: title
+     });
+
+     const data = [...items];
+     const index1 = data.findIndex(e => e.id === id)
+     data[index1]['title'] = title;
+     setItem(data);
+    }catch(err){
+       console.log(err);
+    }       
+   }
+
+
+ */}
+
+ const handleIncreamentItmes1 = (item) => {
+    let data = [...items];
+    let index = data.findIndex( item1 => item1.id == item.id);
+    if(index > -1){
+      if(data[index].quantity <= 5){
+        data[index].quantity++;
+        setItem(data);
+      }
+    }
+
+    increaseItemsCount(item);
+ }
+
+ const handleDecreamentItmes1 = (item) => {
+  let data = [...items];
+  let index = data.findIndex( item1 => item1.id == item.id);
+  if(index > -1){
+    if(data[index].quantity > 0){
+      data[index].quantity--;
+      decreaseItemsCount(item);
+      setItem(data);
+    }
+  }
+}
+
+  return (
+    <>
+    <div className={"product-list"}>
+      <div className={"product-list--wrapper"}>
+        {
+          items.map(item => <ListItem key={item.id} data={item} handleIncreamentItmes={handleIncreamentItmes1} handleDecreamentItmes={handleDecreamentItmes1} />)
+        }
+      </div>
+    </div>
+
+        {
+          loader && <Loader />
+        }
+    </>
+  );
 }
 
 export default Products;

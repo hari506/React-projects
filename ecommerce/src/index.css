@@ -1,6 +1,9 @@
 @import "./styles/items.css";
 @import url("./styles/header.css");
 @import url("./styles/subheader.css");
+@import url("styles/loaderStyles.css");
+@import url('styles/modalStyles.css');
+@import url('styles/cartStyles.css');
 
 * {
   box-sizing: border-box;
