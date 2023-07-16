@@ -2,54 +2,30 @@
 import Products from "./Components/Products/Products";
 import Header from "./Components/Layout/Header";
 import SubHeader from "./Components/Layout/SubHeader/SubHeader";
-import React, {useState} from "react";
+import React, { useDebugValue, useEffect } from "react";
+import { Navigate, Route, Routes } from "react-router-dom";
+import NotFound from "./Components/NotFound";
+import Authentication from "./Components/Auth";
+import {checkUserSignedIn} from "./actions/auth"
+import { useDispatch, useSelector } from "react-redux";
+
 const App = () => {
-
-  const [cartItmes, setCartItems] = useState([]);
-  const [eventItmes, setEventItems] = useState({
-   id: "",
-   type: ""
-  })
-
-  const handleItemCountIncrease = data => {
-   console.log("cart items increase", data.quantity);
-     let items = [...cartItmes];
-     let index = items.findIndex(item => item.id === data.id);
-     if(index > -1){
-      items[index] = data;
-      setCartItems(items);
-     }else{
-      setCartItems([...items, data])
-     }
-  }
-
-  const handleItemCountDecrease = data => {
-   console.log(" app js cart items count decrease ");
-   let items = [...cartItmes];
-   let index = items.findIndex(item => item.id === data.id);
-   if(index > -1){
-      if(data.quantity === 0){
-         items.splice(index, 1);
-      }
-      
-      setCartItems([...items])
-   }
-  }
-
-  const handleCartItemClick = (id, type) => {
-   console.log("cart clicked id", id);
-   console.log("event items", eventItmes);
-     setEventItems({
-      id,
-      type
-     })
-  }
-
-  return (
+   let dispatch = useDispatch();
+   let auth = useSelector(state => state.auth)
+   useEffect(()=>{
+      dispatch(checkUserSignedIn(() =>{}))
+   }, [])
+   return (
       <>
-         <Header items={cartItmes} cartItemClick={handleCartItemClick}></Header>
+         <Header></Header>
          <SubHeader></SubHeader>
-         <Products increaseItemsCount={handleItemCountIncrease} decreaseItemsCount={handleItemCountDecrease} eventQueue={eventItmes}></Products>
+         <Routes>
+            <Route path="/login" element={auth.idToken ? <Navigate to="/" replace/> : <Authentication />} />
+            <Route path="/signup" element={auth.idToken ? <Navigate to="/" replace/> : <Authentication />} />
+            <Route path="/404" element={<NotFound />} />
+            <Route path="/:category?" element={<Products />} />
+            <Route path="*" to="/404" />
+         </Routes>
       </>
    );
 }

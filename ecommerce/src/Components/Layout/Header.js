@@ -1,50 +1,53 @@
-import Cart from "../Cart/Cart";
+import { useNavigate } from "react-router-dom";
+import Cart1 from "../Cart/Cart";
+import HeaderSearch from "../Search";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../../actions/auth";
 
-const Header = ({items, cartItemClick}) => {
+const Header = () => {
+    let navigater = useNavigate();
+    let auth = useSelector(state => state.auth)
+    let dispatch =useDispatch();
+
+    const handleLogout = () => {
+        dispatch(logout())
+    }
+
     return (
         <header>
-        <div className="nav-brand">
-            <a to="/">
-                <span>AmaKart</span>
-                <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-shopping-cart" width="30"
-                    height="30" viewBox="0 0 24 24" strokeWidth="1.5" stroke="white" fill="none" strokeLinecap="round"
-                    strokeLinejoin="round">
-                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                    <circle cx="6" cy="19" r="2" />
-                    <circle cx="17" cy="19" r="2" />
-                    <path d="M17 17h-11v-14h-2" />
-                    <path d="M6 5l14 1l-1 7h-13" />
-                </svg>
-            </a>
-        </div>
-        <div className="searchBox-container">
-            <form>
-                <input name="search" type="text"
-                    id="search" placeholder="Enter product name, category" />
-                <button type="submit">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-search" width="20"
-                        height="20" viewBox="0 0 24 24" strokeWidth="1.5" stroke="white" fill="none"
-                        strokeLinecap="round" strokeLinejoin="round">
+            <div className="nav-brand">
+                <a to="/">
+                    <span>AmaKart</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-shopping-cart" width="30"
+                        height="30" viewBox="0 0 24 24" strokeWidth="1.5" stroke="white" fill="none" strokeLinecap="round"
+                        strokeLinejoin="round">
                         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                        <circle cx="10" cy="10" r="7" />
-                        <line x1="21" y1="21" x2="15" y2="15" />
+                        <circle cx="6" cy="19" r="2" />
+                        <circle cx="17" cy="19" r="2" />
+                        <path d="M17 17h-11v-14h-2" />
+                        <path d="M6 5l14 1l-1 7h-13" />
                     </svg>
-                </button>
-            </form>
-            <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-search" width="20"
-                height="20" viewBox="0 0 24 24" strokeWidth="1.5" stroke="white" fill="none" strokeLinecap="round"
-                strokeLinejoin="round">
-                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                <circle cx="10" cy="10" r="7" />
-                <line x1="21" y1="21" x2="15" y2="15" />
-            </svg>
-        </div>
-        <div className="cart-container">
+                </a>
+            </div>
+            <div className="searchBox-container">
+                <HeaderSearch />
+            </div>
             {
-                <Cart cartItems={items} clickCartItem={cartItemClick}/>
+                auth && auth.idToken ?
+                    <div className="user-actions">
+                        <button title="User Profile" className="material-icons">account_circle</button>
+                        <button title="Logout" onClick={handleLogout} className="material-icons">logout</button>
+                    </div>
+                    :
+                    <button className="login-btn" onClick={() => navigater("/login")}>Login/Register</button>
             }
-        </div>
-    </header>
+
+            <div className="cart-container">
+                {
+                    <Cart1 />
+                }
+            </div>
+        </header>
     );
 }
 

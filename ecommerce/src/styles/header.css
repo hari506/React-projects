@@ -107,3 +107,16 @@ header {
         display: block;
    }
 }
+
+.user-actions {
+    display: flex;
+    align-items: center;
+}
+
+.user-actions button {
+    color: #FFFFFF;
+    background-color: unset;
+    border: unset;
+    margin: 0 10px;
+    cursor: pointer;
+}

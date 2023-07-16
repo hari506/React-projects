@@ -8,16 +8,16 @@ const CartItem = ({item, itemClick}) => {
                 <div>
                     <h4>{item.title}</h4>
                     <div className="pricing">
-                        <span>{item.price}</span>
+                        <span>{item.discountedPrice}</span>
                         <small>
-                            <strike>{item.discountedPrice}</strike>
+                            <strike>{item.price}</strike>
                         </small>
                     </div>
                 </div>
                 <div className="cart-addon cart-addon__modal">
-                    <button onClick={() => itemClick(item.id, -1)}>-</button>
+                    <button onClick={() => itemClick(-1, item)}>-</button>
                     <span className="counter">{item.quantity}</span>
-                    <button onClick={() => itemClick(item.id, 1)}>+</button>
+                    <button onClick={() => itemClick(1, item)}>+</button>
                 </div>
             </div>
         </div>
