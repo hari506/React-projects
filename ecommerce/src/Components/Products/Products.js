@@ -25,9 +25,10 @@ const Products = () => {
          // productTypes += `?search=${searchParams}`;
         }
 
-        const res = await axios.get(`https://react-ecommerce-565a4-default-rtdb.firebaseio.com/${productTypes}.json`);
-       
-        if(!res.data){
+        let res = "";
+        try{
+          res = await axios.get(`https://react-ecommerce-565a4-default-rtdb.firebaseio.com/${productTypes}.json`);
+        }catch(error){
           navigater("/404");
           return;
         }

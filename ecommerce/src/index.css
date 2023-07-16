@@ -5,6 +5,7 @@
 @import url('styles/modalStyles.css');
 @import url('styles/cartStyles.css');
 @import url('styles/auth.css');
+@import url('styles/404.css');
 
 * {
   box-sizing: border-box;
