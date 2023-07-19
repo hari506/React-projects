@@ -1,25 +1,19 @@
-import { ChatEngine } from 'react-chat-engine';
-import ChatFeed from './Component/ChatFeed';
 import './App.css';
 import LoginForm from './Component/LoginForm';
+import { Navigate, Route, Routes } from 'react-router-dom';
+import Home from './Component/Home';
+import NotFound from './Component/NotFound';
+import Signup from './Component/Signup';
 
 function App() {
-
-  if(!localStorage.getItem("username")){
-    return <LoginForm />
-  }
-
   return (
-    <div className="App">
-      <ChatEngine 
-        height = '100vh'
-        projectID = "b3dfde2e-f466-4125-8663-db8ce15ad7b9"
-        userName = {localStorage.getItem("username") || "hari"}
-        userSecret = {localStorage.getItem("password") || "123456"}
-        renderChatFeed = {(chatAppProps) => <ChatFeed {...chatAppProps} />}
-        onNewMessage = {() => new Audio("https://chat-engine-assets.s3.amazonaws.com/click.mp3").play()}
-      />
-    </div>
+    <Routes>
+      <Route path='/login' element={localStorage.getItem("username") ? <Navigate to="/" replace/> : <LoginForm />} />
+      <Route path='/signup' element={localStorage.getItem("username") ? <Navigate to="/" replace/> : <Signup />} />
+      <Route path='/' element={<Home />} />
+      <Route path="/404" element={<NotFound />} />
+      <Route path='*' to="/404" />
+    </Routes>
   );
 }
 
