@@ -1,0 +1,15 @@
+.search-container input{
+    width: 100%;
+}
+
+body{
+    background-color:azure;
+}
+
+.container{
+    width: 50%;
+}
+
+.users-container{
+    margin-top: 20px;
+}
