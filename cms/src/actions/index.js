@@ -79,7 +79,7 @@ export const setUserDetails = (searchVal, callback) => {
             let usersObj = await response.json();
             usersObj = usersObj ? usersObj : [];
             usersObj = usersObj.filter(user => user !== null)
-            if (searchVal && usersObj.length > 1) {
+            if (searchVal && usersObj) {
                 usersObj = usersObj?.filter(user => user.fname.search(searchVal) !== - 1 ? true : false)
             }
 
