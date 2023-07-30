@@ -1,0 +1,24 @@
+@import url('./styles/loaderStyles.css');
+@import url('./styles/modalStyles.css');
+
+body{
+    background-color: aliceblue;
+}
+.table button {
+    width: 100px;
+    height: 100px;
+}
+
+.title {
+    color: red;
+    margin-top: 50px;
+    margin-bottom: 24px;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    font-size: 27px;
+}
+
+.table{
+    width: 20px;
+}
