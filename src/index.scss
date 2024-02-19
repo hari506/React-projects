@@ -1,0 +1,27 @@
+@import url('./styles/variables.scss');
+@import url('./styles/item.scss');
+@import url('./styles/header.scss');
+@import url('./styles/subHeader.scss');
+@import url('./styles/loader.scss');
+@import url('./styles/modal.scss');
+@import url('./styles/cart.scss');
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    // font-family: 'Noto Sans JP', sans-serif;
+    font-family: 'Doppio One', sans-serif;
+}
+
+body {
+    line-height: 1.5;
+    margin: 0;
+    position: relative;
+}
+
+.img-fluid {
+    max-width: 100%;
+    height: auto;
+}
