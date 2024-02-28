@@ -1,4 +1,17 @@
-const CartItem = ({ data, addItem, removeItem }) => {
+import { useDispatch } from "react-redux"
+import { IncreaseItemCount, DecreaseItemCount } from "../../../Actions";
+
+const CartItem = ({ data }) => {
+    let dispatch = useDispatch();
+
+    const removeItem = () => {
+        dispatch(DecreaseItemCount(data.id))
+    }
+
+    const addItem = () => {
+        dispatch(IncreaseItemCount(data))
+    }
+
     return (
         <div className="checkout-modal_list-item">
             <div className="img-wrap">

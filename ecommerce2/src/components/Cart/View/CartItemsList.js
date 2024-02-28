@@ -1,5 +1,7 @@
+import { useSelector } from "react-redux"
 import CartItem from "../CartItems/CartItem"
-const CartItemsList = ({ cartItems, addItem, removeItem }) => {
+const CartItemsList = () => {
+    let cartItems = useSelector(state => state.cart.items)
 
     return (
         <>
@@ -10,8 +12,6 @@ const CartItemsList = ({ cartItems, addItem, removeItem }) => {
                             <CartItem
                                 data={item}
                                 key={item.id}
-                                addItem={addItem}
-                                removeItem={removeItem}
                             />
                         )
                     })

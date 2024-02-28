@@ -1,13 +1,15 @@
 import NavBrand from "./Header/NavBrand";
 import Search from "./Header/Search";
 import Cart from "./Cart";
+import LoginBtn from "./auth/LoginBtn";
 
-const Header = ({ cartItems, AddItemToCart,  RemoveItemFromCart}) => {
+const Header = () => {
     return (
         <header>
             <NavBrand />
             <Search />
-            <Cart cartItems={cartItems} addItem={AddItemToCart} removeItem={RemoveItemFromCart}/>
+            <LoginBtn />
+            <Cart />
         </header >
     );
 }

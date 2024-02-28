@@ -2,26 +2,33 @@ import { useEffect, useState } from "react";
 import ListItem from "./listitems/ListItem";
 import axios from "axios";
 import Loader from "./UI/Loader";
+import { useParams } from "react-router-dom";
 
-const Products = ({AddItemToCart, RemoveItemFromCart, changeItem}) => {
-
-    let [items, setItems] = useState([]);
+const Products = () => {
+console.log("products component");
+    let [products, setProducts] = useState([]);
     let [showLoader, setShowLoader] = useState(true)
+    let params = useParams();
 
     useEffect(() => {
+        console.log("use effect in products");
         async function fetchItems() {
             try {
-                let result = await axios.get('https://react-ecommerce-565a4-default-rtdb.firebaseio.com/items/items.json');
+                let jsonStr = 'items';
+                if(params.category){
+                    jsonStr = 'items-'+ params.category;
+                }
+
+                let result = await axios.get(`https://react-ecommerce-565a4-default-rtdb.firebaseio.com/items/${jsonStr}.json`);
                 let data = result.data;
                 let transfomedData = data.map((item, index) => {
                     return {
                         ...item,
-                        id: index,
                         quantity: 0
                     }
                 })
 
-                setItems(transfomedData)
+                setProducts(transfomedData)
             } catch (error) {
                 console.log(error)
             } finally {
@@ -32,26 +39,19 @@ const Products = ({AddItemToCart, RemoveItemFromCart, changeItem}) => {
 
         fetchItems();
 
-    }, [])
-
-    useEffect(() => {
-        if(changeItem){
-            console.log(changeItem)
-            let products = [...items];
-            let index = products.findIndex(item => item.id === changeItem.id);
-            if(index > -1){
-                products[index].quantity = changeItem.quantity;
-                setItems([...products])
-            }
+        return () => {
+            setProducts([])
+            setShowLoader(true)
         }
-    }, [changeItem])
+
+    }, [params.category])
 
     return (
         <>
             <div className="product-list">
                 <div className="product-list--wrapper">
                     {
-                        items.map(item => <ListItem key={item.id} data={item} AddItemToCart = {AddItemToCart} RemoveItemFromCart={RemoveItemFromCart}/>)
+                        products.map(item => <ListItem key={item.id} data={item} />)
                     }
                 </div>
             </div>

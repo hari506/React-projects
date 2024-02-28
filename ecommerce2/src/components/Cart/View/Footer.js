@@ -1,6 +1,9 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
 
-const Footer = ({ cartItems, handleOrderSuccessModal }) => {
+const Footer = ({ handleOrderSuccessModal }) => {
+    let cartItems = useSelector(state => state.cart.items);
+    let totalAmount = useSelector(state => state.cart.totalAmount);
     return (
         <>
             {
@@ -9,13 +12,7 @@ const Footer = ({ cartItems, handleOrderSuccessModal }) => {
                 <div className="checkout-modal_footer">
                     <div className="totalAmount">
                         <h4>Total Amount: </h4>
-                        <h4>
-                            {
-                                cartItems.reduce((previous, current) => {
-                                    return previous + (current.discountedPrice * current.quantity)
-                                }, 0)
-                            }
-                            <span style={{ marginLeft: "4px" }}>INR</span>
+                        <h4>{totalAmount}<span style={{ marginLeft: "4px" }}>INR</span>
                         </h4>
                     </div>
                     <button onClick={handleOrderSuccessModal}>Order Now</button>

@@ -1,10 +1,38 @@
+import {  useEffect, useState } from "react";
+import {  useLocation, useNavigate } from "react-router-dom";
+
 const Search = () => {
+    let [searchVal, setSearchVal] = useState('');
+    let navigate = useNavigate();
+    let location = useLocation();
+    let urlSearchVal = new URLSearchParams(location.search).get('search');
+
+    useEffect(() => {
+        //console.log(urlSearchVal);
+        setSearchVal(urlSearchVal || "")
+    }, [urlSearchVal])
+    
+   
+
+    const handleSearch = (event) => {
+        event.preventDefault();
+        navigate(location.pathname + '?search='+ searchVal);
+    }
+
+    const handleSearchInput = (event) => {
+        //console.log(event.target.value)
+        setSearchVal(event.target.value)
+    }
+
     return (
         <div className="searchBox-container">
             <form>
                 <input name="search" type="text"
-                    id="search" placeholder="Enter product name, category" />
-                <button type="submit">
+                    id="search" placeholder="Enter product name, category"
+                    value={searchVal}
+                    onChange={handleSearchInput}
+                />
+                <button onClick={handleSearch}>
                     <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-search" width="20"
                         height="20" viewBox="0 0 24 24" strokeWidth="1.5" stroke="white" fill="none"
                         strokeLinecap="round" strokeLinejoin="round">

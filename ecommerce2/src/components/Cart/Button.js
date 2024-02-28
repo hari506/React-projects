@@ -1,4 +1,7 @@
-const Button = ({ cartItems, handleModal }) => {
+import { useSelector } from "react-redux";
+
+const Button = ({ handleModal }) => {
+    let cartItems = useSelector(state => state.cart.items)
     return (
         <button onClick={handleModal}>
             <span data-items={cartItems.length}>Cart</span>
